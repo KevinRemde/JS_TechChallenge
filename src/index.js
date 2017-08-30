@@ -30,9 +30,33 @@ document.querySelector('#verify-button')
         })
     })
 
+// Your code
 /** YOUR CODE STARTS HERE */
 
-// Your code
+// Your code--modify Blockchain
+
+Blockchain.prototype.serialize = function() {
+  var results = this.chain;
+  var formatted = results.map(function(obj){
+    return obj.block;
+  });
+ return JSON.stringify(formatted);
+}
+//console.log(chain.serialize());
+
+Blockchain.prototype.verify = function() {
+  return fetch('https://chessblockchain-fa.azurewebsites.net/api/verify', { 
+    headers: { 'content-type': 'application/json'}, 
+    method: 'POST', body: JSON.stringify({ 
+      chain: this.serialize() })}).then(function(res) {
+      return res.json();
+  }).then(function(json) {
+      console.log(json);
+      return json.result;
+  });
+}
+
+
 
 /** YOUR CODE ENDS HERE */
 
